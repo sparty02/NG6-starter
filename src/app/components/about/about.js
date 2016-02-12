@@ -1,12 +1,17 @@
 import template from './about.html';
-import controller from './about.controller';
 import './about.styl';
+
+class AboutController {
+  constructor() {
+    this.name = 'about';
+  }
+}
 
 let aboutComponent = {
   restrict: 'E',
   bindings: {},
   template,
-  controller,
+  controller: AboutController,
   controllerAs: 'vm'
 };
 

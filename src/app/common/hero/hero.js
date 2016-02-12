@@ -1,12 +1,17 @@
 import template from './hero.html';
-import controller from './hero.controller';
 import './hero.styl';
+
+class HeroController {
+  constructor() {
+    this.name = 'hero';
+  }
+}
 
 let heroComponent = {
   restrict: 'E',
   bindings: {},
   template,
-  controller,
+  controller: HeroController,
   controllerAs: 'vm'
 };
 

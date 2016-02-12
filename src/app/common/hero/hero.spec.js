@@ -1,17 +1,16 @@
-import HeroModule from './hero'
+import HeroModule from './hero';
 import HeroController from './hero.controller';
 import HeroComponent from './hero.component';
 import HeroTemplate from './hero.html';
 
+/* global describe,beforeEach,inject,it,expect */
+
 describe('Hero', () => {
-  let $rootScope, makeController;
+  let makeController;
 
   beforeEach(window.module(HeroModule.name));
-  beforeEach(inject((_$rootScope_) => {
-    $rootScope = _$rootScope_;
-    makeController = () => {
-      return new HeroController();
-    };
+  beforeEach(inject(() => {
+    makeController = () => new HeroController();
   }));
 
   describe('Module', () => {
@@ -35,19 +34,19 @@ describe('Hero', () => {
   });
 
   describe('Component', () => {
-      // component/directive specs
-      let component = HeroComponent;
+    // component/directive specs
+    let component = HeroComponent;
 
-      it('includes the intended template',() => {
-        expect(component.template).to.equal(HeroTemplate);
-      });
+    it('includes the intended template', () => {
+      expect(component.template).to.equal(HeroTemplate);
+    });
 
-      it('uses `controllerAs` syntax', () => {
-        expect(component).to.have.property('controllerAs');
-      });
+    it('uses `controllerAs` syntax', () => {
+      expect(component).to.have.property('controllerAs');
+    });
 
-      it('invokes the right controller', () => {
-        expect(component.controller).to.equal(HeroController);
-      });
+    it('invokes the right controller', () => {
+      expect(component.controller).to.equal(HeroController);
+    });
   });
 });

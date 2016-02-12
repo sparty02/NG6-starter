@@ -1,30 +1,25 @@
 'use strict';
 
-import gulp     from 'gulp';
-import webpack  from 'webpack';
-import path     from 'path';
-import sync     from 'run-sequence';
-import rename   from 'gulp-rename';
+/* global process */
+
+import gulp from 'gulp';
+import webpack from 'webpack';
+import path from 'path';
+import rename from 'gulp-rename';
 import template from 'gulp-template';
-import fs       from 'fs';
-import yargs    from 'yargs';
-import lodash   from 'lodash';
-import gutil    from 'gulp-util';
-import serve    from 'browser-sync';
+import yargs from 'yargs';
+import gutil from 'gulp-util';
+import serve from 'browser-sync';
 import webpackDevMiddelware from 'webpack-dev-middleware';
 import webpachHotMiddelware from 'webpack-hot-middleware';
-import colorsSupported      from 'supports-color';
+import colorsSupported from 'supports-color';
 
-let root = 'client';
+let root = 'src';
 
 // helper method for resolving paths
-let resolveToApp = (glob = '') => {
-  return path.join(root, 'app', glob); // app/{glob}
-};
+let resolveToApp = (glob = '') => path.join(root, 'app', glob);
 
-let resolveToComponents = (glob = '') => {
-  return path.join(root, 'app/components', glob); // app/components/{glob}
-};
+let resolveToComponents = (glob = '') => path.join(root, 'app/components', glob);
 
 // map of all paths
 let paths = {
@@ -45,11 +40,11 @@ gulp.task('webpack', (cb) => {
   config.entry.app = paths.entry;
 
   webpack(config, (err, stats) => {
-    if(err)  {
-      throw new gutil.PluginError("webpack", err);
+    if (err) {
+      throw new gutil.PluginError('webpack', err);
     }
 
-    gutil.log("[webpack]", stats.toString({
+    gutil.log('[webpack]', stats.toString({
       colors: colorsSupported,
       chunks: false,
       errorDetails: true
@@ -62,19 +57,19 @@ gulp.task('webpack', (cb) => {
 gulp.task('serve', () => {
   const config = require('./webpack.dev.config');
   config.entry.app = [
-    // this modules required to make HRM working
-    // it responsible for all this webpack magic
+  // this modules required to make HRM working
+  // it responsible for all this webpack magic
     'webpack-hot-middleware/client?reload=true',
     // application entry point
     paths.entry
   ];
 
-  var compiler = webpack(config);
+  let compiler = webpack(config);
 
   serve({
     port: process.env.PORT || 3000,
     open: false,
-    server: {baseDir: root},
+    server: { baseDir: root },
     middleware: [
       webpackDevMiddelware(compiler, {
         stats: {
@@ -92,16 +87,14 @@ gulp.task('serve', () => {
 gulp.task('watch', ['serve']);
 
 gulp.task('component', () => {
-  const cap = (val) => {
-    return val.charAt(0).toUpperCase() + val.slice(1);
-  };
+  const cap = (val) => val.charAt(0).toUpperCase() + val.slice(1);
   const name = yargs.argv.name;
   const parentPath = yargs.argv.parent || '';
   const destPath = path.join(resolveToComponents(), parentPath, name);
 
   return gulp.src(paths.blankTemplates)
     .pipe(template({
-      name: name,
+      name,
       upCaseName: cap(name)
     }))
     .pipe(rename((path) => {

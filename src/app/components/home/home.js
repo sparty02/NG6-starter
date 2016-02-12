@@ -1,12 +1,17 @@
 import template from './home.html';
-import controller from './home.controller';
 import './home.styl';
+
+class HomeController {
+  constructor() {
+    this.name = 'home';
+  }
+}
 
 let homeComponent = {
   restrict: 'E',
   bindings: {},
   template,
-  controller,
+  controller: HomeController,
   controllerAs: 'vm'
 };
 

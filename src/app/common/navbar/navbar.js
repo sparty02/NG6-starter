@@ -1,12 +1,17 @@
 import template from './navbar.html';
-import controller from './navbar.controller';
 import './navbar.styl';
+
+class NavbarController {
+  constructor() {
+    this.name = 'navbar';
+  }
+}
 
 let navbarComponent = {
   restrict: 'E',
   bindings: {},
   template,
-  controller,
+  controller: NavbarController,
   controllerAs: 'vm'
 };
 
